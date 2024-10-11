@@ -1,0 +1,34 @@
+version: '3.8'
+
+services:
+  tq_backend:
+    build:
+      context: ./tq_backend   # Path to the backend Dockerfile
+      dockerfile: Dockerfile
+    container_name: tq_backend
+    ports:
+      - "5000:5000"  # Map the backend port
+    networks:
+      - tq_network
+
+  tq_frontend:
+    build: 
+      context: ./tq_frontend   # Path to the frontend Dockerfile
+      dockerfile: Dockerfile
+    container_name: tq_frontend
+    ports:
+      - "3000:3000"  # Map the frontend port
+    networks:
+      - tq_network
+    depends_on:
+      - tq_backend
+    volumes:
+      - /tmp/.X11-unix:/tmp/.X11-unix
+    environment:
+      - DISPLAY=${DISPLAY}
+    devices:
+      - /dev/dri:/dev/dri
+
+networks:
+  tq_network:
+    driver: bridge
