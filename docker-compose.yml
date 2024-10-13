@@ -7,28 +7,41 @@ services:
       dockerfile: Dockerfile
     container_name: tq_backend
     ports:
-      - "5000:5000"  # Map the backend port
+      - "5000:5000"  # Map the container's port 5000 to the host's port 5000
     networks:
       - tq_network
 
-  tq_frontend:
-    build: 
-      context: ./tq_frontend   # Path to the frontend Dockerfile
-      dockerfile: Dockerfile
-    container_name: tq_frontend
+  tq_frontend_web:
+    build:
+      context: ./tq_frontend  # Path to the backend Dockerfile
+      dockerfile: qtwasmDockerfile
+    container_name: tq_frontend_web
     ports:
-      - "3000:3000"  # Map the frontend port
+      - "3000:3000"  # Map the container's port 3000 to the host's port 3000
     networks:
       - tq_network
     depends_on:
       - tq_backend
-    volumes:
-      - /tmp/.X11-unix:/tmp/.X11-unix
-    environment:
-      - DISPLAY=${DISPLAY}
-    devices:
-      - /dev/dri:/dev/dri
+    # Comment: "Frontend service is running. Visit http://localhost:3000/apptq_frontend.html"
 
+  tq_frontend_desktop:
+      build: 
+        context: ./tq_frontend   # Path to the frontend Dockerfile
+        dockerfile: qtdeskDockerfile
+      container_name: tq_frontend_desktop
+      ports:
+        - "4000:4000"  # Map the container's port 4000 to the host's port 4000
+      networks:
+        - tq_network
+      depends_on:
+        - tq_backend
+      volumes:
+        - /tmp/.X11-unix:/tmp/.X11-unix
+      environment:
+        - DISPLAY=${DISPLAY}
+      devices:
+        - /dev/dri:/dev/dri
+        
 networks:
   tq_network:
     driver: bridge
