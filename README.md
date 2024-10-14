@@ -29,5 +29,5 @@ This script will internally call `build_docker_images.sh` before starting.
 
 # Start Desktop/Web Solution
 
-Have fun!
+Have fun! Have a coffee or two! talk physics & quantums & be back after 30 mins or so..
 
