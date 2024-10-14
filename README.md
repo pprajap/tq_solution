@@ -18,8 +18,8 @@ This script will internally call `cleanup.sh` before starting.
 
 Set your Docker Hub credentials:
 ```sh
-export DOCKER_USERNAME="your_username"
-export DOCKER_PASSWORD="your_password"
+export DOCKER_USERNAME=<your_username>
+export DOCKER_PASSWORD=<your_password>
 ```
 
 This script will internally call `build_docker_images.sh` before starting.
