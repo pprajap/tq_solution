@@ -1,0 +1,42 @@
+version: '3.8'
+
+services:
+  tq_backend:
+    image: pprajapa/tq_backend:latest
+    container_name: tq_backend
+    ports:
+      - "5000:5000"  # Map the container's port 5000 to the host's port 5000
+    networks:
+      - tq_network
+
+  tq_frontend_web:
+    image: pprajapa/tq_frontend_web_light:latest
+    container_name: tq_frontend_web
+    ports:
+      - "3000:3000"  # Map the container's port 3000 to the host's port 3000
+    networks:
+      - tq_network
+    depends_on:
+      - tq_backend
+    # Comment: "Frontend service is running. Visit http://localhost:3000/apptq_frontend.html"
+
+  tq_frontend_desktop:
+      image: pprajapa/tq_frontend_desktop:latest
+      container_name: tq_frontend_desktop
+      ports:
+        - "4000:4000"  # Map the container's port 4000 to the host's port 4000
+      networks:
+        - tq_network
+      depends_on:
+        - tq_backend
+      volumes:
+        - /tmp/.X11-unix:/tmp/.X11-unix
+      environment:
+        - DISPLAY=${DISPLAY}
+      devices:
+        - /dev/dri:/dev/dri
+        
+networks:
+  tq_network:
+    name: tq_network
+    driver: bridge
