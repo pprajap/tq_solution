@@ -17,15 +17,15 @@ echo $DOCKER_PASSWORD | docker login --username $DOCKER_USERNAME --password-stdi
 ./build_docker_images.sh
 
 # push all above to docker hub
-docker tag tq_backend:latest  $DOCKER_USERNAME/tq_backend:latest
-docker push $DOCKER_USERNAME/tq_backend:latest
+docker tag tq-backend:latest  $DOCKER_USERNAME/tq-backend:latest
+docker push $DOCKER_USERNAME/tq-backend:latest
 
-docker tag tq_frontend_desktop:latest  $DOCKER_USERNAME/tq_frontend_desktop:latest
-docker push $DOCKER_USERNAME/tq_frontend_desktop:latest
+docker tag tq-frontend-desktop:latest  $DOCKER_USERNAME/tq-frontend-desktop:latest
+docker push $DOCKER_USERNAME/tq-frontend-desktop:latest
 
-docker tag tq_frontend_web_light:latest  $DOCKER_USERNAME/tq_frontend_web_light:latest
-docker push $DOCKER_USERNAME/tq_frontend_web_light:latest
+docker tag tq-frontend-web-light:latest  $DOCKER_USERNAME/tq-frontend-web-light:latest
+docker push $DOCKER_USERNAME/tq-frontend-web-light:latest
 
-docker tag tq_frontend_web:latest  $DOCKER_USERNAME/tq_frontend_web:latest
-docker push $DOCKER_USERNAME/tq_frontend_web:latest
+docker tag tq-frontend-web:latest  $DOCKER_USERNAME/tq-frontend-web:latest
+docker push $DOCKER_USERNAME/tq-frontend-web:latest
 

@@ -1,0 +1,29 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  labels:
+    io.kompose.service: tq-backend
+  name: tq-backend
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      io.kompose.service: tq-backend
+  strategy: {}
+  template:
+    metadata:
+      labels:
+        io.kompose.network/tq_network: "true"
+        io.kompose.service: tq-backend
+    spec:
+      containers:
+      - image: pprajapa/tq-backend:latest
+        imagePullPolicy: ""
+        name: tq-backend
+        ports:
+        - containerPort: 5000
+        resources: {}
+      restartPolicy: Always
+      serviceAccountName: ""
+      volumes: null
+status: {}

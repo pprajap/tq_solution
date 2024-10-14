@@ -1,0 +1,29 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  labels:
+    io.kompose.service: tq-frontend-web
+  name: tq-frontend-web
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      io.kompose.service: tq-frontend-web
+  strategy: {}
+  template:
+    metadata:
+      labels:
+        io.kompose.network/tq_network: "true"
+        io.kompose.service: tq-frontend-web
+    spec:
+      containers:
+      - image: pprajapa/tq-frontend-web-light:latest
+        imagePullPolicy: ""
+        name: tq-frontend-web
+        ports:
+        - containerPort: 3000
+        resources: {}
+      restartPolicy: Always
+      serviceAccountName: ""
+      volumes: null
+status: {}
