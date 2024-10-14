@@ -1,7 +1,7 @@
 #!/bin/bash
 
 # call ./cleanup.sh to remove all images and containers
-./cleanup.sh
+# ./cleanup.sh
 
 # build tq_backend image
 docker build -f tq_backend/Dockerfile -t tq_backend ./tq_backend
