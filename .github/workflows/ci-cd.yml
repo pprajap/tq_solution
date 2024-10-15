@@ -25,6 +25,8 @@ jobs:
       # Checks-out your repository under $GITHUB_WORKSPACE, so your job can access it
       - name: Checkout code
         uses: actions/checkout@v4
+        submodules: true
+        recursive: true
 
       # Runs a single command using the runners shell
       - name: Run a one-line script
@@ -47,8 +49,6 @@ jobs:
 
       - name: Build and push tq-backend image
         run: |
-          ls -l tq_backend/Dockerfile
-          cat ./tq_backend/Dockerfile
           docker build -t ${{ secrets.DOCKER_USERNAME }}/tq-backend:latest -f tq_backend/Dockerfile ./tq_backend
           docker push ${{ secrets.DOCKER_USERNAME }}/tq-backend:latest
 
