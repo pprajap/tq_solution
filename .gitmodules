@@ -4,3 +4,6 @@
 [submodule "tq_frontend"]
 	path = tq_frontend
 	url = git@github.com:pprajap/tq_frontend.git
+[submodule "tq_sdk"]
+	path = tq_sdk
+	url = git@github.com:pprajap/tq_sdk.git
