@@ -86,4 +86,4 @@ jobs:
       - name: Update Kubernetes deployments
         run: |
           kubectl set image deployment/tq-backend tq-backend=${{ secrets.DOCKER_USERNAME }}/tq-backend:latest
-          kubectl set image deployment/tq-frontend-web-light tq-frontend-web-light=${{ secrets.DOCKER_USERNAME }}/tq-frontend-web-light:latest
+          kubectl set image deployment/tq-frontend-web tq-frontend-web=${{ secrets.DOCKER_USERNAME }}/tq-frontend-web-light:latest
