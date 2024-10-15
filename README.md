@@ -1,5 +1,7 @@
 # tq_solution
 
+# Pipeline status
+[![CI/CI Pipeline](https://github.com/pprajap/tq_solution/actions/workflows/ci-cd.yml/badge.svg?branch=main)](https://github.com/pprajap/tq_solution/actions/workflows/ci-cd.yml)
 
 # Build All Docker Images
 ```sh
