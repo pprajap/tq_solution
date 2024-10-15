@@ -1,8 +1,5 @@
-# This is a basic workflow to help you get started with Actions
-
 name: CI/CI Pipeline
 
-# Controls when the workflow will run
 on:
   # Triggers the workflow on push or pull request events but only for the "main" branch
   push:
@@ -15,8 +12,8 @@ on:
 
 # A workflow run is made up of one or more jobs that can run sequentially or in parallel
 jobs:
-  # This workflow contains a single job called "build"
-  build:
+  # This workflow contains a single job called "build_and_push_backend_image"
+  build_and_push_backend_image:
     # The type of runner that the job will run on
     runs-on: ubuntu-latest
 
@@ -29,10 +26,6 @@ jobs:
           submodules: true
           recursive: true
 
-      # Runs a single command using the runners shell
-      - name: Run a one-line script
-        run: echo Hello, terra quantum!
-
       - name: Set up Docker Buildx
         uses: docker/setup-buildx-action@v1
 
@@ -44,30 +37,76 @@ jobs:
 
       - name: Build and push tq-backend image
         run: |
-          docker build -t ${{ secrets.DOCKER_USERNAME }}/tq-backend:latest -f tq_backend/Dockerfile ./tq_backend
+          docker build -t ${{ secrets.DOCKER_USERNAME }}/tq-backend:latest-$GITHUB_SHA -f tq_backend/Dockerfile ./tq_backend
+          docker push ${{ secrets.DOCKER_USERNAME }}/tq-backend:latest-$GITHUB_SHA
+          docker tag ${{ secrets.DOCKER_USERNAME }}/tq-backend:latest-$GITHUB_SHA ${{ secrets.DOCKER_USERNAME }}/tq-backend:latest
           docker push ${{ secrets.DOCKER_USERNAME }}/tq-backend:latest
 
-      - name: Build and push tq-frontend-desktop image
-        run: |
-          docker build -t ${{ secrets.DOCKER_USERNAME }}/tq-frontend-desktop:latest -f tq_frontend/qtdeskDockerfile ./tq_frontend
-          docker push ${{ secrets.DOCKER_USERNAME }}/tq-frontend-desktop:latest
-
-      - name: Build and push tq-frontend-web-light image
-        run: |
-          docker build -t ${{ secrets.DOCKER_USERNAME }}/tq-frontend-web-light:latest -f tq_frontend/qtwasm_multistage_Dockerfile ./tq_frontend
-          docker push ${{ secrets.DOCKER_USERNAME }}/tq-frontend-web-light:latest
-
-  deploy:
-    # needs: build
+  # This workflow contains a single job called "build_and_push_frontend_web_image"
+  build_and_push_frontend_web_image:
+    # The type of runner that the job will run on
     runs-on: ubuntu-latest
 
+    # Steps represent a sequence of tasks that will be executed as part of the job
     steps:
+      # Checks-out your repository under $GITHUB_WORKSPACE, so your job can access it
       - name: Checkout code
         uses: actions/checkout@v4
         with:
           submodules: true
           recursive: true
 
+      - name: Set up Docker Buildx
+        uses: docker/setup-buildx-action@v1
+
+      - name: Log in to Docker Hub
+        uses: docker/login-action@v1
+        with:
+          username: ${{ secrets.DOCKER_USERNAME }}
+          password: ${{ secrets.DOCKER_PASSWORD }}
+
+      - name: Build and push tq-frontend-web-light image
+        run: |
+          docker build -t ${{ secrets.DOCKER_USERNAME }}/tq-frontend-web-light:latest-$GITHUB_SHA -f tq_frontend/qtwasm_multistage_Dockerfile ./tq_frontend
+          docker push ${{ secrets.DOCKER_USERNAME }}/tq-frontend-web-light:latest-$GITHUB_SHA
+          docker tag ${{ secrets.DOCKER_USERNAME }}/tq-frontend-web-light:latest-$GITHUB_SHA ${{ secrets.DOCKER_USERNAME }}/tq-frontend-web-light:latest
+          docker push ${{ secrets.DOCKER_USERNAME }}/tq-frontend-web-light:latest
+
+  # This workflow contains a single job called "build_and_push_frontend_desktop_image"
+  build_and_push_frontend_desktop_image:
+    # The type of runner that the job will run on
+    runs-on: ubuntu-latest
+
+    # Steps represent a sequence of tasks that will be executed as part of the job
+    steps:
+      # Checks-out your repository under $GITHUB_WORKSPACE, so your job can access it
+      - name: Checkout code
+        uses: actions/checkout@v4
+        with:
+          submodules: true
+          recursive: true
+
+      - name: Set up Docker Buildx
+        uses: docker/setup-buildx-action@v1
+
+      - name: Log in to Docker Hub
+        uses: docker/login-action@v1
+        with:
+          username: ${{ secrets.DOCKER_USERNAME }}
+          password: ${{ secrets.DOCKER_PASSWORD }}
+
+      - name: Build and push tq-frontend-desktop image
+        run: |
+          docker build -t ${{ secrets.DOCKER_USERNAME }}/tq-frontend-desktop:latest-$GITHUB_SHA -f tq_frontend/qtdeskDockerfile ./tq_frontend
+          docker push ${{ secrets.DOCKER_USERNAME }}/tq-frontend-desktop:latest-$GITHUB_SHA
+          docker tag ${{ secrets.DOCKER_USERNAME }}/tq-frontend-desktop:latest-$GITHUB_SHA ${{ secrets.DOCKER_USERNAME }}/tq-frontend-desktop:latest
+          docker push ${{ secrets.DOCKER_USERNAME }}/tq-frontend-desktop:latest
+
+  deploy:
+    needs: [build_and_push_backend_image, build_and_push_frontend_web_image, build_and_push_frontend_desktop_image]
+    runs-on: ubuntu-latest
+
+    steps:
       # Configure Workload Identity Federation and generate an access token.
       #
       # See https://github.com/google-github-actions/auth for more options,
@@ -92,12 +131,36 @@ jobs:
           kubectl get deployments
           kubectl get pods
 
-      # Update the Kubernetes deployments with the new images
-      - name: Update Kubernetes deployments
-        run: |
-          kubectl set image deployment/tq-backend tq-backend=${{ secrets.DOCKER_USERNAME }}/tq-backend:latest
-          kubectl set image deployment/tq-frontend-web tq-frontend-web=${{ secrets.DOCKER_USERNAME }}/tq-frontend-web-light:latest
+      # Download and set up Kompose
+      - name: 'Download and set up Kompose'
+        run: |-
+          curl -L https://github.com/kubernetes/kompose/releases/latest/download/kompose-linux-amd64 -o kompose
+          chmod +x kompose
 
+      # Convert the Docker Compose file to Kubernetes manifests and apply them
+      - name: 'Convert Docker Compose to Kubernetes and apply'
+        run: |-
+          ./kompose convert -f docker-compose-web.yml | kubectl apply -f -
+
+      # Update the image in the Kubernetes deployment
+      - name: 'Update image in Kubernetes deployment'
+        run: |-
+          kubectl set image deployment/tq-backend tq-backend=${{ secrets.DOCKER_USERNAME }}/tq-backend:latest-$GITHUB_SHA
+          kubectl set image deployment/tq-frontend-desktop tq-frontend-desktop=${{ secrets.DOCKER_USERNAME }}/tq-frontend-desktop:latest-$GITHUB_SHA
+          kubectl set image deployment/tq-frontend-web tq-frontend-web=${{ secrets.DOCKER_USERNAME }}/tq-frontend-web-light:latest-$GITHUB_SHA
+
+      - name: 'Check rollout status for tq-backend'
+        run: |
+          kubectl rollout status deployment/tq-backend
+
+      - name: 'Check rollout status for tq-frontend-desktop'
+        run: |
+          kubectl rollout status deployment/tq-frontend-desktop
+
+      - name: 'Check rollout status for tq-frontend-web'
+        run: |
+          kubectl rollout status deployment/tq-frontend-web
+      
       # verify the connection to the cluster AFTER DEPLOYMENT
       - name: 'Verify cluster services AFTER DEPLOYMENT'
         run: |
