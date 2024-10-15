@@ -113,7 +113,7 @@ jobs:
         with:
           submodules: true
           recursive: true
-          
+
       # Configure Workload Identity Federation and generate an access token.
       #
       # See https://github.com/google-github-actions/auth for more options,
@@ -147,7 +147,11 @@ jobs:
       # Convert the Docker Compose file to Kubernetes manifests and apply them
       - name: 'Convert Docker Compose to Kubernetes and apply'
         run: |-
-          ./kompose convert -f docker-compose-web.yml | kubectl apply -f -
+          ./kompose convert -f docker-compose-web.yml
+          kubectl apply -f tq-backend-service.yaml
+          kubectl apply -f tq-frontend-web-tcp-service.yaml
+          kubectl apply -f tq-backend-deployment.yaml
+          kubectl apply -f tq-frontend-web-deployment.yaml
 
       # Update the image in the Kubernetes deployment
       - name: 'Update image in Kubernetes deployment'
