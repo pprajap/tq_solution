@@ -7,17 +7,6 @@ services:
     networks:
       - tq-network
 
-  tq-frontend-web:
-    image: pprajapa/tq-frontend-web-light:latest
-    container_name: tq-frontend-web
-    ports:
-      - "3000:3000"  # Map the container's port 3000 to the host's port 3000
-    networks:
-      - tq-network
-    depends_on:
-      - tq-backend
-    # Comment: "Frontend service is running. Visit http://localhost:3000/apptq_frontend.html"
-
   tq-frontend-desktop:
       image: pprajapa/tq-frontend-desktop:latest
       container_name: tq-frontend-desktop
@@ -33,6 +22,17 @@ services:
         - DISPLAY=${DISPLAY}
       devices:
         - /dev/dri:/dev/dri
+
+  tq-frontend-web:
+    image: pprajapa/tq-frontend-web-light:latest
+    container_name: tq-frontend-web
+    ports:
+      - "3000:3000"  # Map the container's port 3000 to the host's port 3000
+    networks:
+      - tq-network
+    depends_on:
+      - tq-backend
+    # Comment: "Frontend service is running. Visit http://localhost:3000/apptq_frontend.html"
         
 networks:
   tq-network:

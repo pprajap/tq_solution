@@ -1,16 +1,22 @@
 #!/bin/bash
 
-# call ./cleanup.sh to remove all images and containers
-# ./cleanup.sh
+# call ./tq_backend/build_push_backend_docker_image.sh to build and push backend image
+echo "Building and pushing backend Docker image..."
+cd tq_backend
+./build_push_backend_docker_image.sh
+cd ..
+echo "Backend Docker image built and pushed."
 
-# build tq-backend image
-docker build -f tq_backend/Dockerfile -t tq-backend ./tq_backend
+# call ./tq_frontend/build_push_frontend_desktop_docker_image.sh to build and push frontend desktop image
+echo "Building and pushing frontend desktop Docker image..."
+cd tq_frontend
+./build_push_frontend_desktop_docker_image.sh
+cd ..
+echo "Frontend desktop Docker image built and pushed."
 
-# build tq-frontend-desktop image
-docker build -f tq_frontend/qtdeskDockerfile -t tq-frontend-desktop ./tq_frontend
-
-# build tq-frontend-web-light image
-docker build -f tq_frontend/qtwasm_multistage_Dockerfile -t tq-frontend-web-light ./tq_frontend
-
-# build tq-frontend-web-full image
-docker build -f tq_frontend/qtwasmDockerfile -t tq-frontend-web ./tq_frontend
+# call ./tq_frontend/build_push_frontend_web_light_docker_image.sh to build and push frontend web light image
+echo "Building and pushing frontend web light Docker image..."
+cd tq_frontend
+./build_push_frontend_web_light_docker_image.sh
+cd ..
+echo "Frontend web light Docker image built and pushed."
