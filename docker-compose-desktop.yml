@@ -4,8 +4,6 @@ services:
   tq-backend:
     image: pprajapa/tq-backend:latest
     container_name: tq-backend
-    ports:
-      - "5000:5000"  # Map the container's port 5000 to the host's port 5000
     networks:
       - tq-network
 

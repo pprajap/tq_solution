@@ -13,7 +13,7 @@ spec:
   template:
     metadata:
       labels:
-        io.kompose.network/tq_network: "true"
+        io.kompose.network/tq-network: "true"
         io.kompose.service: tq-backend
     spec:
       containers:
