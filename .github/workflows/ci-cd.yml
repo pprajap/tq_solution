@@ -42,12 +42,6 @@ jobs:
           username: ${{ secrets.DOCKER_USERNAME }}
           password: ${{ secrets.DOCKER_PASSWORD }}
 
-      # # Runs a set of commands using the runners shell
-      # - name: Run a multi-line script
-      #   run: |
-      #     echo Add other actions to build,
-      #     echo test, and deploy your project.
-
       - name: Build and push tq-backend image
         run: |
           docker build -t ${{ secrets.DOCKER_USERNAME }}/tq-backend:latest -f tq_backend/Dockerfile ./tq_backend
@@ -68,21 +62,37 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-      - name: Set up Cloud SDK
-        uses: google-github-actions/setup-gcloud@v1
+      - name: Checkout code
+        uses: actions/checkout@v4
         with:
-          project_id: ${{ secrets.GCP_PROJECT_ID }}
-          service_account_key: ${{ secrets.GCP_SA_KEY }}
-          export_default_credentials: true
+          submodules: true
+          recursive: true
 
-      - name: Configure Docker
+      # Configure Workload Identity Federation and generate an access token.
+      #
+      # See https://github.com/google-github-actions/auth for more options,
+      # including authenticating via a JSON credentials file.
+      - id: 'auth'
+        name: 'Authenticate to Google Cloud'
+        uses: google-github-actions/auth@v2
+        with:
+          workload_identity_provider: '${{ secrets.GCP_SA_KEY }}'
+
+      # Get the GKE credentials so we can deploy to the cluster
+      - name: 'Set up GKE credentials'
+        uses: google-github-actions/get-gke-credentials@v2
+        with:
+          cluster_name: '${{ secrets.GKE_CLUSTER_NAME }}'
+          location: '${{ secrets.GKE_CLUSTER_ZONE }}'
+
+      # verify the connection to the cluster
+      - name: 'Verify cluster services'
         run: |
-          gcloud auth configure-docker
+          kubectl get services
+          kubectl get deployments
+          kubectl get pods
 
-      - name: Get GKE credentials
-        run: |
-          gcloud container clusters get-credentials ${{ secrets.GKE_CLUSTER_NAME }} --zone ${{ secrets.GKE_CLUSTER_ZONE }}
-
+      # Update the Kubernetes deployments with the new images
       - name: Update Kubernetes deployments
         run: |
           kubectl set image deployment/tq-backend tq-backend=${{ secrets.DOCKER_USERNAME }}/tq-backend:latest
