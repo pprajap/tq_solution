@@ -85,8 +85,8 @@ jobs:
           cluster_name: '${{ secrets.GKE_CLUSTER_NAME }}'
           location: '${{ secrets.GKE_CLUSTER_ZONE }}'
 
-      # verify the connection to the cluster
-      - name: 'Verify cluster services'
+      # verify the connection to the cluster BEFORE DEPLOYMENT
+      - name: 'Verify cluster services BEFORE DEPLOYMENT'
         run: |
           kubectl get services
           kubectl get deployments
@@ -97,3 +97,10 @@ jobs:
         run: |
           kubectl set image deployment/tq-backend tq-backend=${{ secrets.DOCKER_USERNAME }}/tq-backend:latest
           kubectl set image deployment/tq-frontend-web tq-frontend-web=${{ secrets.DOCKER_USERNAME }}/tq-frontend-web-light:latest
+
+      # verify the connection to the cluster AFTER DEPLOYMENT
+      - name: 'Verify cluster services AFTER DEPLOYMENT'
+        run: |
+          kubectl get services
+          kubectl get deployments
+          kubectl get pods
