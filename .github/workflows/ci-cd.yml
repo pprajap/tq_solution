@@ -25,8 +25,9 @@ jobs:
       # Checks-out your repository under $GITHUB_WORKSPACE, so your job can access it
       - name: Checkout code
         uses: actions/checkout@v4
-        submodules: true
-        recursive: true
+        with:
+          submodules: true
+          recursive: true
 
       # Runs a single command using the runners shell
       - name: Run a one-line script
