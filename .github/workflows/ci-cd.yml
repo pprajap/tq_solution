@@ -58,7 +58,7 @@ jobs:
           docker push ${{ secrets.DOCKER_USERNAME }}/tq-frontend-web-light:latest
 
   deploy:
-    needs: build
+    # needs: build
     runs-on: ubuntu-latest
 
     steps:
@@ -76,7 +76,7 @@ jobs:
         name: 'Authenticate to Google Cloud'
         uses: google-github-actions/auth@v2
         with:
-          workload_identity_provider: '${{ secrets.GCP_SA_KEY }}'
+          service_account: '${{ secrets.GCP_SA_KEY }}'
 
       # Get the GKE credentials so we can deploy to the cluster
       - name: 'Set up GKE credentials'
