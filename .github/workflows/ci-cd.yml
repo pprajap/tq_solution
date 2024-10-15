@@ -159,14 +159,12 @@ jobs:
           kubectl set image deployment/tq-backend tq-backend=${{ secrets.DOCKER_USERNAME }}/tq-backend:latest-$GITHUB_SHA
           kubectl set image deployment/tq-frontend-web tq-frontend-web=${{ secrets.DOCKER_USERNAME }}/tq-frontend-web-light:latest-$GITHUB_SHA
 
+      # Check the rollout status of the deployments
       - name: 'Check rollout status for tq-backend'
         run: |
           kubectl rollout status deployment/tq-backend
 
-      - name: 'Check rollout status for tq-frontend-desktop'
-        run: |
-          kubectl rollout status deployment/tq-frontend-desktop
-
+      # Check the rollout status of the deployments
       - name: 'Check rollout status for tq-frontend-web'
         run: |
           kubectl rollout status deployment/tq-frontend-web
