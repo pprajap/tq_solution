@@ -1,6 +1,10 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
+  annotations:
+    kompose.cmd: kompose convert -f ../docker-compose-web.yml
+    kompose.service.type: LoadBalancer
+    kompose.version: 1.34.0 (cbf2835db)
   labels:
     io.kompose.service: tq-frontend-web
   name: tq-frontend-web
@@ -9,21 +13,19 @@ spec:
   selector:
     matchLabels:
       io.kompose.service: tq-frontend-web
-  strategy: {}
   template:
     metadata:
+      annotations:
+        kompose.cmd: kompose convert -f ../docker-compose-web.yml
+        kompose.service.type: LoadBalancer
+        kompose.version: 1.34.0 (cbf2835db)
       labels:
-        io.kompose.network/tq-network: "true"
         io.kompose.service: tq-frontend-web
     spec:
       containers:
-      - image: pprajapa/tq-frontend-web-light:latest
-        imagePullPolicy: ""
-        name: tq-frontend-web
-        ports:
-        - containerPort: 3000
-        resources: {}
+        - image: pprajapa/tq-frontend-web-light:latest
+          name: tq-frontend-web
+          ports:
+            - containerPort: 3000
+              protocol: TCP
       restartPolicy: Always
-      serviceAccountName: ""
-      volumes: null
-status: {}

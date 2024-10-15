@@ -26,6 +26,4 @@ docker push $DOCKER_USERNAME/tq-frontend-desktop:latest
 docker tag tq-frontend-web-light:latest  $DOCKER_USERNAME/tq-frontend-web-light:latest
 docker push $DOCKER_USERNAME/tq-frontend-web-light:latest
 
-docker tag tq-frontend-web:latest  $DOCKER_USERNAME/tq-frontend-web:latest
-docker push $DOCKER_USERNAME/tq-frontend-web:latest
 

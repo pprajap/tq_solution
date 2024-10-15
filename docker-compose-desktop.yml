@@ -1,4 +1,4 @@
-version: '3'
+version: '3.9'
 
 services:
   tq-backend:
@@ -6,22 +6,24 @@ services:
     container_name: tq-backend
     networks:
       - tq-network
+    ports:
+      - "5000"  # Specify the port for internal communication
 
   tq-frontend-desktop:
-      image: pprajapa/tq-frontend-desktop:latest
-      container_name: tq-frontend-desktop
-      ports:
-        - "4000:4000"  # Map the container's port 4000 to the host's port 4000
-      networks:
-        - tq-network
-      depends_on:
-        - tq-backend
-      volumes:
-        - /tmp/.X11-unix:/tmp/.X11-unix
-      environment:
-        - DISPLAY=${DISPLAY}
-      devices:
-        - /dev/dri:/dev/dri
+    image: pprajapa/tq-frontend-desktop:latest
+    container_name: tq-frontend-desktop
+    ports:
+      - "4000:4000"  # Map the container's port 4000 to the host's port 4000
+    networks:
+      - tq-network
+    depends_on:
+      - tq-backend
+    volumes:
+      - /tmp/.X11-unix:/tmp/.X11-unix
+    environment:
+      - DISPLAY=${DISPLAY}
+    devices:
+      - /dev/dri:/dev/dri
 
   tq-frontend-web:
     image: pprajapa/tq-frontend-web-light:latest
@@ -32,9 +34,10 @@ services:
       - tq-network
     depends_on:
       - tq-backend
-    # Comment: "Frontend service is running. Visit http://localhost:3000/apptq_frontend.html"
+    labels:
+      kompose.service.type: LoadBalancer
+    # Comment: "Frontend service should be running. Visit http://localhost:3000/apptq_frontend.html"
         
 networks:
   tq-network:
-    name: tq-network
     driver: bridge
