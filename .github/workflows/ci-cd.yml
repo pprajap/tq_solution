@@ -47,7 +47,7 @@ jobs:
 
       - name: Build and push tq-backend image
         run: |
-          docker build -t ${{ secrets.DOCKER_USERNAME }}/tq-backend:latest -f tq_backend/Dockerfile ./tq_backend
+          docker build -t ${{ secrets.DOCKER_USERNAME }}/tq-backend:latest -f ../tq_backend/Dockerfile ../tq_backend
           docker push ${{ secrets.DOCKER_USERNAME }}/tq-backend:latest
 
       - name: Build and push tq-frontend-desktop image
