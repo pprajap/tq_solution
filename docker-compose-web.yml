@@ -22,7 +22,7 @@ services:
       kompose.service.type: LoadBalancer
     # Comment: "Frontend service should be running. Visit http://localhost:3000/apptq_frontend.html"
   
-  reverse-proxy:
+  tq-reverse-proxy:
     image: pprajapa/tq-reverse-proxy:latest
     container_name: tq-reverse-proxy
     ports:
@@ -32,6 +32,8 @@ services:
       - tq-frontend-web
     networks:
       - tq-network
+    labels:
+      kompose.service.type: LoadBalancer
         
 networks:
   tq-network:
