@@ -179,8 +179,10 @@ jobs:
           ./kompose convert -f docker-compose-web.yml
           kubectl apply -f tq-backend-service.yaml
           kubectl apply -f tq-frontend-web-tcp-service.yaml
+          kubectl apply -f reverse-proxy-service.yaml
           kubectl apply -f tq-backend-deployment.yaml
           kubectl apply -f tq-frontend-web-deployment.yaml
+          kubectl apply -f reverse-proxy-deployment.yaml
 
       # Update the image in the Kubernetes deployment
       - name: 'Update image in Kubernetes deployment'
