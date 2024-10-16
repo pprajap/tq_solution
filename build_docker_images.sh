@@ -35,3 +35,15 @@ else
   echo "Error: tq_frontend directory not found."
   exit 1
 fi
+
+# call ./reverse-proxy/build_push_backend_docker_image.sh to build and push backend image
+echo "Building reverse-proxy Docker image..."
+if [ -d "reverse-proxy" ]; then
+  cd reverse-proxy
+  ./build_reverse_proxy_docker_image.sh
+  cd ..
+  echo "Reverse proxy Docker image built."
+else
+  echo "Error: reverse-proxy directory not found."
+  exit 1
+fi
