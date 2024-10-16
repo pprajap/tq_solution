@@ -67,7 +67,7 @@ jobs:
 
       - name: Build and push tq-frontend-web-light image
         run: |
-          docker build --build-arg CLOUD_DEPLOYMENT=$CLOUD_DEPLOYMENT -t ${{ secrets.DOCKER_USERNAME }}/tq-frontend-web-light:latest-$GITHUB_SHA -f tq_frontend/qtwasm_multistage_Dockerfile ./tq_frontend
+          docker build --build-arg CLOUD_DEPLOYMENT=$CLOUD_DEPLOYMENT -t ${{ secrets.DOCKER_USERNAME }}/tq-frontend-web-light:latest-$GITHUB_SHA -f tq_frontend/qtwebDockerfile ./tq_frontend
           docker push ${{ secrets.DOCKER_USERNAME }}/tq-frontend-web-light:latest-$GITHUB_SHA
           docker tag ${{ secrets.DOCKER_USERNAME }}/tq-frontend-web-light:latest-$GITHUB_SHA ${{ secrets.DOCKER_USERNAME }}/tq-frontend-web-light:latest
           docker push ${{ secrets.DOCKER_USERNAME }}/tq-frontend-web-light:latest

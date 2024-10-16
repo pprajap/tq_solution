@@ -115,7 +115,7 @@ jobs:
 
     - name: Build and push tq-frontend-web-light image
       run: |
-        docker build -t ${{ secrets.DOCKER_USERNAME }}/tq-frontend-web-light:latest -f tq_frontend/qtwasm_multistage_Dockerfile ./tq_frontend
+        docker build -t ${{ secrets.DOCKER_USERNAME }}/tq-frontend-web-light:latest -f tq_frontend/qtwebDockerfile ./tq_frontend
         docker push ${{ secrets.DOCKER_USERNAME }}/tq-frontend-web-light:latest
 
     - name: Build and push tq-frontend-web image
