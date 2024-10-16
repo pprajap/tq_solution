@@ -23,9 +23,8 @@ services:
     # Comment: "Frontend service should be running. Visit http://localhost:3000/apptq_frontend.html"
   
   reverse-proxy:
-    build:
-      context: ./reverse-proxy
-      dockerfile: Dockerfile
+    image: pprajapa/tq-reverse-proxy:latest
+    container_name: tq-reverse-proxy
     ports:
       - "80:80"
     depends_on:
