@@ -12,7 +12,7 @@ on:
 
 # A workflow run is made up of one or more jobs that can run sequentially or in parallel
 jobs:
-  # This workflow contains a single job called "build_and_push_backend_image"
+  # This workflow contains a single job called "test_backend"
   test_backend:
       runs-on: ubuntu-latest
       steps:
@@ -36,6 +36,29 @@ jobs:
       - name: Run tests
         run: |
           pytest
+
+# This workflow contains a single job called "test_frontend"
+  test_frontend:
+    runs-on: ubuntu-latest
+    steps:
+    - name: Checkout code
+        uses: actions/checkout@v4
+        with:
+          submodules: true
+          recursive: true
+
+    - name: Install dependencies
+      run: |
+        sudo apt-get update
+        sudo apt-get install -y qt6-base-dev qt6-tools-dev qt6-tools-dev-tools
+
+    - name: Build and run tests
+      run: |
+        mkdir -p build
+        cd build
+        cmake ../tq_frontend/tests
+        make
+        ctest --output-on-failure
 
   build_and_push_backend_image:
     needs: test_backend
@@ -68,7 +91,7 @@ jobs:
 
   # This workflow contains a single job called "build_and_push_frontend_web_image"
   build_and_push_frontend_web_image:
-    # The type of runner that the job will run on
+    needs: test_frontend
     runs-on: ubuntu-latest
 
     # Steps represent a sequence of tasks that will be executed as part of the job
@@ -98,7 +121,7 @@ jobs:
 
   # This workflow contains a single job called "build_and_push_frontend_desktop_image"
   build_and_push_frontend_desktop_image:
-    # The type of runner that the job will run on
+    needs: test_frontend
     runs-on: ubuntu-latest
 
     # Steps represent a sequence of tasks that will be executed as part of the job
