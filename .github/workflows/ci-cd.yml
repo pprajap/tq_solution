@@ -51,6 +51,7 @@ jobs:
       run: |
         sudo apt-get update
         sudo apt-get install -y \
+          sudo \
           build-essential \
           cmake \
           git \
@@ -87,7 +88,8 @@ jobs:
           qml6-module-qtquick-layouts \
           qml6-module-qtquick-templates \
           qml6-module-qt-labs-platform \
-          && apt-get clean
+          && sudo apt-get clean
+          && sudo rm -rf /var/lib/apt/lists/*
 
     - name: Build and run tests
       run: |
