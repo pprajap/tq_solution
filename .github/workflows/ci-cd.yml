@@ -102,7 +102,7 @@ jobs:
         export DISPLAY=:99
         mkdir -p build
         cd build
-        cmake ..
+        cmake ../tq_frontend
         make
         ctest --output-on-failure
 
