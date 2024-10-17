@@ -19,38 +19,36 @@ services:
     depends_on:
       - tq-backend
     volumes:
-      - /tmp/.X11-unix:/tmp/.X11-unix
+      - /tmp/.X11-unix:/tmp/.X11-unix # Linux only
     environment:
-      - DISPLAY=${DISPLAY}
+      - DISPLAY=${DISPLAY} # use for Linux only, comment out for MacOS & Windows
+      # - DISPLAY=host.docker.internal:0 # use for MacOS & Windows only, comment out for Linux
     devices:
-      - /dev/dri:/dev/dri
-
-  tq-frontend-web:
-    image: pprajapa/tq-frontend-web-light:latest
-    container_name: tq-frontend-web
-    ports:
-      - "3000:3000"  # Map the container's port 3000 to the host's port 3000
-    networks:
-      - tq-network
-    depends_on:
-      - tq-backend
-    labels:
-      kompose.service.type: LoadBalancer
-    # Comment: "Frontend service should be running. Visit http://localhost:3000/apptq_frontend.html"
-  
-  tq-reverse-proxy:
-    image: pprajapa/tq-reverse-proxy:latest
-    container_name: tq-reverse-proxy
-    ports:
-      - "80:80"
-    depends_on:
-      - tq-backend
-      - tq-frontend-web
-    networks:
-      - tq-network
-    labels:
-      kompose.service.type: LoadBalancer
-
+      - /dev/dri:/dev/dri # use for Linux only, comment out for MacOS & Windows
+    ########################################
+    # Instructions for MacOS:
+    # 1. Install XQuartz
+    # 2. Open XQuartz and go to Preferences > Security and check the box for "Allow connections from network clients"
+    # 3. Restart XQuartz
+    # 4. Run the following command in the terminal:
+    #    xhost +
+    # 5. Uncomment the following line:
+    #    - DISPLAY=host.docker.internal:0
+    # 6. Comment out the following line:
+    #    - DISPLAY=${DISPLAY}
+    ########################################
+    ########################################
+    # Instructions for Windows:
+    # 1. Install VcXsrv
+    # 2. Open VcXsrv and go with the default settings
+    # 3. Run the following command in the terminal:
+    #    set DISPLAY=host.docker.internal:0
+    # 4. Uncomment the following line:
+    #    - DISPLAY=host.docker.internal:0
+    # 5. Comment out the following line:
+    #    - DISPLAY=${DISPLAY}
+    ########################################
+    
 networks:
   tq-network:
     driver: bridge
