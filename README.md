@@ -7,6 +7,7 @@ This project provides a comprehensive solution for setting up and managing a des
   - [Index](#index)
   - [Pipeline Status](#pipeline-status)
   - [Project live!](#project-live)
+  - [Introction Presentation](#introction-presentation)
   - [Quick Start Desktop/Web Solution on your local machine](#quick-start-desktopweb-solution-on-your-local-machine)
   - [Build All Docker Images](#build-all-docker-images)
   - [Push All Docker Images to Docker Hub](#push-all-docker-images-to-docker-hub)
@@ -31,10 +32,13 @@ This project provides a comprehensive solution for setting up and managing a des
 ## Pipeline Status
 [![CI/CD Pipeline][def]](https://github.com/pprajap/tq_solution/actions/workflows/ci-cd.yml)
 <!-- add image -->
-![tq_solution CI/CD workflow](image.png)
+[![tq_solution CI/CD workflow](image.png)](https://github.com/pprajap/tq_solution/actions/workflows/ci-cd.yml)
 
 ## Project live!
 http://34.32.71.110:3000/apptq_frontend.html
+
+## Introction Presentation
+[Presentation Link](https://docs.google.com/presentation/d/1qwqgRXpfgGatwbIHXP70Sn6GKGLI-yNwz298czE1fZY/edit?usp=sharing)
 
 ## Quick Start Desktop/Web Solution on your local machine
 ```sh
