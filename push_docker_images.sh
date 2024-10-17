@@ -1,17 +1,16 @@
 #!/bin/bash
+
 # Exit immediately if a command exits with a non-zero status
 set -e
 
 # Treat unset variables as an error
 set -u
 
-echo "Building all images..."
+# call ./build_docker_images.sh to build all images
 ./build_docker_images.sh
-echo "Images build completed."
 
 # Docker login
 docker login
-echo "Docker login successful."
 
 # fetch user name from docker login
 export DOCKER_USERNAME=$(docker info | grep Username | awk '{print $2}')
