@@ -133,7 +133,7 @@ jobs:
           docker push ${{ secrets.DOCKER_USERNAME }}/tq-reverse-proxy:latest
 
   deploy:
-    needs: [build_and_push_backend_image, build_and_push_frontend_web_image, build_and_push_frontend_desktop_image, build_and_push_reverse_proxy_image]
+    needs: [build_and_push_backend_image, build_and_push_frontend_web_image, build_and_push_reverse_proxy_image]
     runs-on: ubuntu-latest
 
     steps:
