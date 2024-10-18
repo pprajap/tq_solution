@@ -1,13 +1,13 @@
 version: '3.9'
 
 services:
-  tq-backend:
+  tq-backend-local:
     image: pprajapa/tq-backend:latest
-    container_name: tq-backend
+    container_name: tq-backend-local
     networks:
       - tq-network
     ports:
-      - "5000"  # Specify the port for internal communication
+      - "5000:5000"  # Specify the port for internal communication
 
   tq-frontend-desktop:
     image: pprajapa/tq-frontend-desktop:latest
@@ -17,7 +17,7 @@ services:
     networks:
       - tq-network
     depends_on:
-      - tq-backend
+      - tq-backend-local
     volumes:
       - /tmp/.X11-unix:/tmp/.X11-unix # Linux only
     environment:
@@ -51,4 +51,5 @@ services:
     
 networks:
   tq-network:
+    name: tq-network
     driver: bridge
