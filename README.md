@@ -8,9 +8,7 @@ This project provides a comprehensive solution for setting up and managing a des
   - [Pipeline Status](#pipeline-status)
   - [Project live!](#project-live)
   - [Introction Presentation](#introction-presentation)
-  - [Quick Start Desktop/Web Solution on your local machine](#quick-start-desktopweb-solution-on-your-local-machine)
-  - [Build All Docker Images](#build-all-docker-images)
-  - [Push All Docker Images to Docker Hub](#push-all-docker-images-to-docker-hub)
+  - [Quick Start Desktop on your local machine](#quick-start-desktop-on-your-local-machine)
   - [Setting Up Google Cloud](#setting-up-google-cloud)
     - [Set Variables](#set-variables)
     - [Install and Authenticate Google Cloud SDK](#install-and-authenticate-google-cloud-sdk)
@@ -40,25 +38,11 @@ http://34.32.71.110:3000/apptq_frontend.html
 ## Introction Presentation
 [Presentation Link](https://docs.google.com/presentation/d/1qwqgRXpfgGatwbIHXP70Sn6GKGLI-yNwz298czE1fZY/edit?usp=sharing)
 
-## Quick Start Desktop/Web Solution on your local machine
+## Quick Start Desktop on your local machine
 ```sh
 ./start_desktop_solution.sh 
 ```
-OR
-```sh
-./start_web_solution.sh 
-```
 Note: do you have mac / windows? make sure you read https://github.com/pprajap/tq_frontend/blob/main/README.md to set up necessary environment
-
-## Build All Docker Images
-```sh
-./build_docker_images.sh
-```
-
-## Push All Docker Images to Docker Hub
-```sh
-./push_docker_images.sh
-```
 
 ## Setting Up Google Cloud
 
