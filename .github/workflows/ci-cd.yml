@@ -3,11 +3,17 @@ name: CI/CI Pipeline
 on:
   # Triggers the workflow on push or pull request events but only for the "main" branch
   push:
-    branches: [ "main" ]
+    branches:
+      - main
+      - dev
+      - 'release/*'
+      - 'feature/*'
   pull_request:
-    branches: [ "main" ]
-
-  # Allows you to run this workflow manually from the Actions tab
+    branches:
+      - main
+      - dev
+      - 'release/*'
+      - 'feature/*'
   workflow_dispatch:
 
 # A workflow run is made up of one or more jobs that can run sequentially or in parallel
@@ -106,6 +112,7 @@ jobs:
         make
         ctest --output-on-failure
 
+  # This workflow contains a single job called "build_and_push_backend_image"
   build_and_push_backend_image:
     needs: test_backend
     runs-on: ubuntu-latest
