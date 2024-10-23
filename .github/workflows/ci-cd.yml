@@ -18,146 +18,146 @@ on:
 
 # A workflow run is made up of one or more jobs that can run sequentially or in parallel
 jobs:
-  # This workflow contains a single job called "test_backend"
-  test_backend:
-    runs-on: ubuntu-latest
-    steps:
-    - name: Checkout code
-      uses: actions/checkout@v4
-      with:
-        submodules: true
-        recursive: true
+  # # This workflow contains a single job called "test_backend"
+  # test_backend:
+  #   runs-on: ubuntu-latest
+  #   steps:
+  #   - name: Checkout code
+  #     uses: actions/checkout@v4
+  #     with:
+  #       submodules: true
+  #       recursive: true
 
-    - name: Set up Python
-      uses: actions/setup-python@v2
-      with:
-        python-version: '3.10'
+  #   - name: Set up Python
+  #     uses: actions/setup-python@v2
+  #     with:
+  #       python-version: '3.10'
 
-    - name: Install dependencies
-      run: |
-        python -m pip install --upgrade pip
-        pip install pytest
-        pip install -r tq_backend/requirements.txt
+  #   - name: Install dependencies
+  #     run: |
+  #       python -m pip install --upgrade pip
+  #       pip install pytest
+  #       pip install -r tq_backend/requirements.txt
 
-    - name: Run tests
-      run: |
-        pytest
+  #   - name: Run tests
+  #     run: |
+  #       pytest
 
-  # This workflow contains a single job called "test_frontend"
-  test_frontend:
-    runs-on: ubuntu-latest
-    steps:
-    - name: Checkout code
-      uses: actions/checkout@v4
-      with:
-        submodules: true
-        recursive: true
+  # # This workflow contains a single job called "test_frontend"
+  # test_frontend:
+  #   runs-on: ubuntu-latest
+  #   steps:
+  #   - name: Checkout code
+  #     uses: actions/checkout@v4
+  #     with:
+  #       submodules: true
+  #       recursive: true
 
-    - name: Install dependencies
-      run: |
-        sudo apt-get update &&
-        sudo apt-get install -y \
-          sudo \
-          build-essential \
-          cmake \
-          git \
-          wget \
-          python3 \
-          python3-pip \
-          mesa-common-dev \
-          mesa-utils \
-          libvulkan-dev \
-          libxkbcommon-x11-0 \
-          libxkbcommon-dev \
-          software-properties-common \
-          libxcb-xinerama0 \
-          libxcb-xinput0 \
-          libxcb-icccm4 \
-          libxcb-image0 \
-          libxcb-keysyms1 \
-          libxcb-randr0 \
-          libxcb-render-util0 \
-          libxcb-shape0 \
-          libxcb-sync1 \
-          libxcb-xfixes0 \
-          libxcb-xkb1 \
-          qt6-base-dev \
-          qt6-declarative-dev \
-          qt6-tools-dev \
-          qt6-tools-dev-tools \
-          qt6-wayland-dev \
-          qml6-module-qtqml \
-          qml6-module-qtqml-workerscript \
-          qml6-module-qtquick \
-          qml6-module-qtquick-window \
-          qml6-module-qtquick-controls \
-          qml6-module-qtquick-layouts \
-          qml6-module-qtquick-templates \
-          qml6-module-qt-labs-platform \
-          xvfb && \
-        sudo apt-get clean && \
-        sudo rm -rf /var/lib/apt/lists/*
+  #   - name: Install dependencies
+  #     run: |
+  #       sudo apt-get update &&
+  #       sudo apt-get install -y \
+  #         sudo \
+  #         build-essential \
+  #         cmake \
+  #         git \
+  #         wget \
+  #         python3 \
+  #         python3-pip \
+  #         mesa-common-dev \
+  #         mesa-utils \
+  #         libvulkan-dev \
+  #         libxkbcommon-x11-0 \
+  #         libxkbcommon-dev \
+  #         software-properties-common \
+  #         libxcb-xinerama0 \
+  #         libxcb-xinput0 \
+  #         libxcb-icccm4 \
+  #         libxcb-image0 \
+  #         libxcb-keysyms1 \
+  #         libxcb-randr0 \
+  #         libxcb-render-util0 \
+  #         libxcb-shape0 \
+  #         libxcb-sync1 \
+  #         libxcb-xfixes0 \
+  #         libxcb-xkb1 \
+  #         qt6-base-dev \
+  #         qt6-declarative-dev \
+  #         qt6-tools-dev \
+  #         qt6-tools-dev-tools \
+  #         qt6-wayland-dev \
+  #         qml6-module-qtqml \
+  #         qml6-module-qtqml-workerscript \
+  #         qml6-module-qtquick \
+  #         qml6-module-qtquick-window \
+  #         qml6-module-qtquick-controls \
+  #         qml6-module-qtquick-layouts \
+  #         qml6-module-qtquick-templates \
+  #         qml6-module-qt-labs-platform \
+  #         xvfb && \
+  #       sudo apt-get clean && \
+  #       sudo rm -rf /var/lib/apt/lists/*
 
-    - name: Start Xvfb
-      run: |
-        sudo Xvfb :99 -ac &
-        export DISPLAY=:99
+  #   - name: Start Xvfb
+  #     run: |
+  #       sudo Xvfb :99 -ac &
+  #       export DISPLAY=:99
 
-    - name: Build and run tests
-      run: |
-        export DISPLAY=:99
-        mkdir -p build
-        cd build
-        cmake ../tq_frontend
-        make
-        ctest --output-on-failure
+  #   - name: Build and run tests
+  #     run: |
+  #       export DISPLAY=:99
+  #       mkdir -p build
+  #       cd build
+  #       cmake ../tq_frontend
+  #       make
+  #       ctest --output-on-failure
 
-  # This workflow contains a single job called "build_and_push_backend_image"
-  build_and_push_backend_image:
-    needs: test_backend
-    runs-on: ubuntu-latest
+  # # This workflow contains a single job called "build_and_push_backend_image"
+  # build_and_push_backend_image:
+  #   needs: test_backend
+  #   runs-on: ubuntu-latest
 
-    # Steps represent a sequence of tasks that will be executed as part of the job
-    steps:
-      # Checks-out your repository under $GITHUB_WORKSPACE, so your job can access it
-      - name: Checkout code
-        uses: actions/checkout@v4
-        with:
-          submodules: true
-          recursive: true
+  #   # Steps represent a sequence of tasks that will be executed as part of the job
+  #   steps:
+  #     # Checks-out your repository under $GITHUB_WORKSPACE, so your job can access it
+  #     - name: Checkout code
+  #       uses: actions/checkout@v4
+  #       with:
+  #         submodules: true
+  #         recursive: true
 
-      - name: Set up Docker Buildx
-        uses: docker/setup-buildx-action@v1
+  #     - name: Set up Docker Buildx
+  #       uses: docker/setup-buildx-action@v1
 
-      - name: Extract branch name
-        id: extract_branch
-        run: |
-          BRANCH_NAME=${GITHUB_REF#refs/heads/}
-          SANITIZED_BRANCH_NAME=$(echo "$BRANCH_NAME" | tr '[:upper:]' '[:lower:]' | tr -c '[:alnum:]' '-')
-          SANITIZED_BRANCH_NAME=$(echo "$SANITIZED_BRANCH_NAME" | sed 's/-*$//')
-          echo "SANITIZED_BRANCH_NAME=$SANITIZED_BRANCH_NAME" >> $GITHUB_ENV
+  #     - name: Extract branch name
+  #       id: extract_branch
+  #       run: |
+  #         BRANCH_NAME=${GITHUB_REF#refs/heads/}
+  #         SANITIZED_BRANCH_NAME=$(echo "$BRANCH_NAME" | tr '[:upper:]' '[:lower:]' | tr -c '[:alnum:]' '-')
+  #         SANITIZED_BRANCH_NAME=$(echo "$SANITIZED_BRANCH_NAME" | sed 's/-*$//')
+  #         echo "SANITIZED_BRANCH_NAME=$SANITIZED_BRANCH_NAME" >> $GITHUB_ENV
 
-      - name: Log in to Docker Hub
-        uses: docker/login-action@v1
-        with:
-          username: ${{ secrets.DOCKER_USERNAME }}
-          password: ${{ secrets.DOCKER_PASSWORD }}
+  #     - name: Log in to Docker Hub
+  #       uses: docker/login-action@v1
+  #       with:
+  #         username: ${{ secrets.DOCKER_USERNAME }}
+  #         password: ${{ secrets.DOCKER_PASSWORD }}
 
-      - name: Build and push tq-backend image
-        run: |
-          docker build -t ${{ secrets.DOCKER_USERNAME }}/tq-backend:${{ env.SANITIZED_BRANCH_NAME }}-$GITHUB_SHA -f tq_backend/Dockerfile ./tq_backend
-          docker push ${{ secrets.DOCKER_USERNAME }}/tq-backend:${{ env.SANITIZED_BRANCH_NAME }}-$GITHUB_SHA
-          docker tag ${{ secrets.DOCKER_USERNAME }}/tq-backend:${{ env.SANITIZED_BRANCH_NAME }}-$GITHUB_SHA ${{ secrets.DOCKER_USERNAME }}/tq-backend:latest-${{ env.SANITIZED_BRANCH_NAME }}
-          docker push ${{ secrets.DOCKER_USERNAME }}/tq-backend:latest-${{ env.SANITIZED_BRANCH_NAME }}
-          # if branch is main then also push it as latest tag
-          if [ "${{ env.SANITIZED_BRANCH_NAME }}" == "main" ]; then
-            docker tag ${{ secrets.DOCKER_USERNAME }}/tq-backend:latest-${{ env.SANITIZED_BRANCH_NAME }} ${{ secrets.DOCKER_USERNAME }}/tq-backend:latest
-            docker push ${{ secrets.DOCKER_USERNAME }}/tq-backend:latest
-          fi
+  #     - name: Build and push tq-backend image
+  #       run: |
+  #         docker build -t ${{ secrets.DOCKER_USERNAME }}/tq-backend:${{ env.SANITIZED_BRANCH_NAME }}-$GITHUB_SHA -f tq_backend/Dockerfile ./tq_backend
+  #         docker push ${{ secrets.DOCKER_USERNAME }}/tq-backend:${{ env.SANITIZED_BRANCH_NAME }}-$GITHUB_SHA
+  #         docker tag ${{ secrets.DOCKER_USERNAME }}/tq-backend:${{ env.SANITIZED_BRANCH_NAME }}-$GITHUB_SHA ${{ secrets.DOCKER_USERNAME }}/tq-backend:latest-${{ env.SANITIZED_BRANCH_NAME }}
+  #         docker push ${{ secrets.DOCKER_USERNAME }}/tq-backend:latest-${{ env.SANITIZED_BRANCH_NAME }}
+  #         # if branch is main then also push it as latest tag
+  #         if [ "${{ env.SANITIZED_BRANCH_NAME }}" == "main" ]; then
+  #           docker tag ${{ secrets.DOCKER_USERNAME }}/tq-backend:latest-${{ env.SANITIZED_BRANCH_NAME }} ${{ secrets.DOCKER_USERNAME }}/tq-backend:latest
+  #           docker push ${{ secrets.DOCKER_USERNAME }}/tq-backend:latest
+  #         fi
 
   # This workflow contains a single job called "build_and_push_frontend_web_image"
   build_and_push_frontend_web_image:
-    needs: test_frontend
+    # needs: test_frontend
     runs-on: ubuntu-latest
 
     # Steps represent a sequence of tasks that will be executed as part of the job
@@ -188,182 +188,186 @@ jobs:
 
       - name: Build and push tq-frontend-web-light image
         run: |
-          docker build -t ${{ secrets.DOCKER_USERNAME }}/tq-frontend-web-light:${{ env.SANITIZED_BRANCH_NAME }}-$GITHUB_SHA -f tq_frontend/qtwebDockerfile ./tq_frontend
-          docker push ${{ secrets.DOCKER_USERNAME }}/tq-frontend-web-light:${{ env.SANITIZED_BRANCH_NAME }}-$GITHUB_SHA
-          docker tag ${{ secrets.DOCKER_USERNAME }}/tq-frontend-web-light:${{ env.SANITIZED_BRANCH_NAME }}-$GITHUB_SHA ${{ secrets.DOCKER_USERNAME }}/tq-frontend-web-light:latest-${{ env.SANITIZED_BRANCH_NAME }}
-          docker push ${{ secrets.DOCKER_USERNAME }}/tq-frontend-web-light:latest-${{ env.SANITIZED_BRANCH_NAME }}
-          # if branch is main then also push it as latest tag
-          if [ "${{ env.SANITIZED_BRANCH_NAME }}" == "main" ]; then
-            docker tag ${{ secrets.DOCKER_USERNAME }}/tq-frontend-web-light:latest-${{ env.SANITIZED_BRANCH_NAME }} ${{ secrets.DOCKER_USERNAME }}/tq-frontend-web-light:latest
-            docker push ${{ secrets.DOCKER_USERNAME }}/tq-frontend-web-light:latest
-          fi
+          docker build \
+          --build-arg QT_EMAIL=${{ secrets.QT_ACCOUNT_EMAIL }} \
+          --build-arg QT_PASSWORD=${{ secrets.QT_ACCOUNT_PASSWORD }} \
+          -t ${{ secrets.DOCKER_USERNAME }}/tq-frontend-web-light:${{ env.SANITIZED_BRANCH_NAME }}-$GITHUB_SHA \
+          -f tq_frontend/qtwebDockerfile ./tq_frontend
+        # docker push ${{ secrets.DOCKER_USERNAME }}/tq-frontend-web-light:${{ env.SANITIZED_BRANCH_NAME }}-$GITHUB_SHA
+        # docker tag ${{ secrets.DOCKER_USERNAME }}/tq-frontend-web-light:${{ env.SANITIZED_BRANCH_NAME }}-$GITHUB_SHA ${{ secrets.DOCKER_USERNAME }}/tq-frontend-web-light:latest-${{ env.SANITIZED_BRANCH_NAME }}
+        # docker push ${{ secrets.DOCKER_USERNAME }}/tq-frontend-web-light:latest-${{ env.SANITIZED_BRANCH_NAME }}
+        # # if branch is main then also push it as latest tag
+        # if [ "${{ env.SANITIZED_BRANCH_NAME }}" == "main" ]; then
+        #   docker tag ${{ secrets.DOCKER_USERNAME }}/tq-frontend-web-light:latest-${{ env.SANITIZED_BRANCH_NAME }} ${{ secrets.DOCKER_USERNAME }}/tq-frontend-web-light:latest
+        #   docker push ${{ secrets.DOCKER_USERNAME }}/tq-frontend-web-light:latest
+        # fi
 
-  # This workflow contains a single job called "build_and_push_frontend_desktop_image"
-  build_and_push_frontend_desktop_image:
-    needs: test_frontend
-    runs-on: ubuntu-latest
+  # # This workflow contains a single job called "build_and_push_frontend_desktop_image"
+  # build_and_push_frontend_desktop_image:
+  #   needs: test_frontend
+  #   runs-on: ubuntu-latest
 
-    # Steps represent a sequence of tasks that will be executed as part of the job
-    steps:
-      # Checks-out your repository under $GITHUB_WORKSPACE, so your job can access it
-      - name: Checkout code
-        uses: actions/checkout@v4
-        with:
-          submodules: true
-          recursive: true
+  #   # Steps represent a sequence of tasks that will be executed as part of the job
+  #   steps:
+  #     # Checks-out your repository under $GITHUB_WORKSPACE, so your job can access it
+  #     - name: Checkout code
+  #       uses: actions/checkout@v4
+  #       with:
+  #         submodules: true
+  #         recursive: true
 
-      - name: Set up Docker Buildx
-        uses: docker/setup-buildx-action@v1
+  #     - name: Set up Docker Buildx
+  #       uses: docker/setup-buildx-action@v1
 
-      - name: Extract branch name
-        id: extract_branch
-        run: |
-          BRANCH_NAME=${GITHUB_REF#refs/heads/}
-          SANITIZED_BRANCH_NAME=$(echo "$BRANCH_NAME" | tr '[:upper:]' '[:lower:]' | tr -c '[:alnum:]' '-')
-          SANITIZED_BRANCH_NAME=$(echo "$SANITIZED_BRANCH_NAME" | sed 's/-*$//')
-          echo "SANITIZED_BRANCH_NAME=$SANITIZED_BRANCH_NAME" >> $GITHUB_ENV
+  #     - name: Extract branch name
+  #       id: extract_branch
+  #       run: |
+  #         BRANCH_NAME=${GITHUB_REF#refs/heads/}
+  #         SANITIZED_BRANCH_NAME=$(echo "$BRANCH_NAME" | tr '[:upper:]' '[:lower:]' | tr -c '[:alnum:]' '-')
+  #         SANITIZED_BRANCH_NAME=$(echo "$SANITIZED_BRANCH_NAME" | sed 's/-*$//')
+  #         echo "SANITIZED_BRANCH_NAME=$SANITIZED_BRANCH_NAME" >> $GITHUB_ENV
 
-      - name: Log in to Docker Hub
-        uses: docker/login-action@v1
-        with:
-          username: ${{ secrets.DOCKER_USERNAME }}
-          password: ${{ secrets.DOCKER_PASSWORD }}
+  #     - name: Log in to Docker Hub
+  #       uses: docker/login-action@v1
+  #       with:
+  #         username: ${{ secrets.DOCKER_USERNAME }}
+  #         password: ${{ secrets.DOCKER_PASSWORD }}
 
-      - name: Build and push tq-frontend-desktop image
-        run: |
-          docker build -t ${{ secrets.DOCKER_USERNAME }}/tq-frontend-desktop:${{ env.SANITIZED_BRANCH_NAME }}-$GITHUB_SHA -f tq_frontend/qtdeskDockerfile ./tq_frontend
-          docker push ${{ secrets.DOCKER_USERNAME }}/tq-frontend-desktop:${{ env.SANITIZED_BRANCH_NAME }}-$GITHUB_SHA
-          docker tag ${{ secrets.DOCKER_USERNAME }}/tq-frontend-desktop:${{ env.SANITIZED_BRANCH_NAME }}-$GITHUB_SHA ${{ secrets.DOCKER_USERNAME }}/tq-frontend-desktop:latest-${{ env.SANITIZED_BRANCH_NAME }}
-          docker push ${{ secrets.DOCKER_USERNAME }}/tq-frontend-desktop:latest-${{ env.SANITIZED_BRANCH_NAME }}
-          # if branch is main then also push it as latest tag
-          if [ "${{ env.SANITIZED_BRANCH_NAME }}" == "main" ]; then
-            docker tag ${{ secrets.DOCKER_USERNAME }}/tq-frontend-desktop:latest-${{ env.SANITIZED_BRANCH_NAME }} ${{ secrets.DOCKER_USERNAME }}/tq-frontend-desktop:latest
-            docker push ${{ secrets.DOCKER_USERNAME }}/tq-frontend-desktop:latest
-          fi
+  #     - name: Build and push tq-frontend-desktop image
+  #       run: |
+  #         docker build -t ${{ secrets.DOCKER_USERNAME }}/tq-frontend-desktop:${{ env.SANITIZED_BRANCH_NAME }}-$GITHUB_SHA -f tq_frontend/qtdeskDockerfile ./tq_frontend
+  #         docker push ${{ secrets.DOCKER_USERNAME }}/tq-frontend-desktop:${{ env.SANITIZED_BRANCH_NAME }}-$GITHUB_SHA
+  #         docker tag ${{ secrets.DOCKER_USERNAME }}/tq-frontend-desktop:${{ env.SANITIZED_BRANCH_NAME }}-$GITHUB_SHA ${{ secrets.DOCKER_USERNAME }}/tq-frontend-desktop:latest-${{ env.SANITIZED_BRANCH_NAME }}
+  #         docker push ${{ secrets.DOCKER_USERNAME }}/tq-frontend-desktop:latest-${{ env.SANITIZED_BRANCH_NAME }}
+  #         # if branch is main then also push it as latest tag
+  #         if [ "${{ env.SANITIZED_BRANCH_NAME }}" == "main" ]; then
+  #           docker tag ${{ secrets.DOCKER_USERNAME }}/tq-frontend-desktop:latest-${{ env.SANITIZED_BRANCH_NAME }} ${{ secrets.DOCKER_USERNAME }}/tq-frontend-desktop:latest
+  #           docker push ${{ secrets.DOCKER_USERNAME }}/tq-frontend-desktop:latest
+  #         fi
 
-  # This workflow contains a single job called "build_and_push_reverse_proxy_image"
-  build_and_push_reverse_proxy_image:
-    # The type of runner that the job will run on
-    runs-on: ubuntu-latest
+  # # This workflow contains a single job called "build_and_push_reverse_proxy_image"
+  # build_and_push_reverse_proxy_image:
+  #   # The type of runner that the job will run on
+  #   runs-on: ubuntu-latest
 
-    # Steps represent a sequence of tasks that will be executed as part of the job
-    steps:
-      # Checks-out your repository under $GITHUB_WORKSPACE, so your job can access it
-      - name: Checkout code
-        uses: actions/checkout@v4
-        with:
-          submodules: true
-          recursive: true
+  #   # Steps represent a sequence of tasks that will be executed as part of the job
+  #   steps:
+  #     # Checks-out your repository under $GITHUB_WORKSPACE, so your job can access it
+  #     - name: Checkout code
+  #       uses: actions/checkout@v4
+  #       with:
+  #         submodules: true
+  #         recursive: true
 
-      - name: Set up Docker Buildx
-        uses: docker/setup-buildx-action@v1
+  #     - name: Set up Docker Buildx
+  #       uses: docker/setup-buildx-action@v1
 
-      - name: Extract branch name
-        id: extract_branch
-        run: |
-          BRANCH_NAME=${GITHUB_REF#refs/heads/}
-          SANITIZED_BRANCH_NAME=$(echo "$BRANCH_NAME" | tr '[:upper:]' '[:lower:]' | tr -c '[:alnum:]' '-')
-          SANITIZED_BRANCH_NAME=$(echo "$SANITIZED_BRANCH_NAME" | sed 's/-*$//')
-          echo "SANITIZED_BRANCH_NAME=$SANITIZED_BRANCH_NAME" >> $GITHUB_ENV
+  #     - name: Extract branch name
+  #       id: extract_branch
+  #       run: |
+  #         BRANCH_NAME=${GITHUB_REF#refs/heads/}
+  #         SANITIZED_BRANCH_NAME=$(echo "$BRANCH_NAME" | tr '[:upper:]' '[:lower:]' | tr -c '[:alnum:]' '-')
+  #         SANITIZED_BRANCH_NAME=$(echo "$SANITIZED_BRANCH_NAME" | sed 's/-*$//')
+  #         echo "SANITIZED_BRANCH_NAME=$SANITIZED_BRANCH_NAME" >> $GITHUB_ENV
 
-      - name: Log in to Docker Hub
-        uses: docker/login-action@v1
-        with:
-          username: ${{ secrets.DOCKER_USERNAME }}
-          password: ${{ secrets.DOCKER_PASSWORD }}
+  #     - name: Log in to Docker Hub
+  #       uses: docker/login-action@v1
+  #       with:
+  #         username: ${{ secrets.DOCKER_USERNAME }}
+  #         password: ${{ secrets.DOCKER_PASSWORD }}
 
-      - name: Build and push tq-reverse-proxy image
-        run: |
-          docker build -t ${{ secrets.DOCKER_USERNAME }}/tq-reverse-proxy:${{ env.SANITIZED_BRANCH_NAME }}-$GITHUB_SHA -f reverse-proxy/Dockerfile ./reverse-proxy
-          docker push ${{ secrets.DOCKER_USERNAME }}/tq-reverse-proxy:${{ env.SANITIZED_BRANCH_NAME }}-$GITHUB_SHA
-          docker tag ${{ secrets.DOCKER_USERNAME }}/tq-reverse-proxy:${{ env.SANITIZED_BRANCH_NAME }}-$GITHUB_SHA ${{ secrets.DOCKER_USERNAME }}/tq-reverse-proxy:latest-${{ env.SANITIZED_BRANCH_NAME }}
-          docker push ${{ secrets.DOCKER_USERNAME }}/tq-reverse-proxy:latest-${{ env.SANITIZED_BRANCH_NAME }}
-          # if branch is main then also push it as latest tag
-          if [ "${{ env.SANITIZED_BRANCH_NAME }}" == "main" ]; then
-            docker tag ${{ secrets.DOCKER_USERNAME }}/tq-reverse-proxy:latest-${{ env.SANITIZED_BRANCH_NAME }} ${{ secrets.DOCKER_USERNAME }}/tq-reverse-proxy:latest
-            docker push ${{ secrets.DOCKER_USERNAME }}/tq-reverse-proxy:latest
-          fi
+  #     - name: Build and push tq-reverse-proxy image
+  #       run: |
+  #         docker build -t ${{ secrets.DOCKER_USERNAME }}/tq-reverse-proxy:${{ env.SANITIZED_BRANCH_NAME }}-$GITHUB_SHA -f reverse-proxy/Dockerfile ./reverse-proxy
+  #         docker push ${{ secrets.DOCKER_USERNAME }}/tq-reverse-proxy:${{ env.SANITIZED_BRANCH_NAME }}-$GITHUB_SHA
+  #         docker tag ${{ secrets.DOCKER_USERNAME }}/tq-reverse-proxy:${{ env.SANITIZED_BRANCH_NAME }}-$GITHUB_SHA ${{ secrets.DOCKER_USERNAME }}/tq-reverse-proxy:latest-${{ env.SANITIZED_BRANCH_NAME }}
+  #         docker push ${{ secrets.DOCKER_USERNAME }}/tq-reverse-proxy:latest-${{ env.SANITIZED_BRANCH_NAME }}
+  #         # if branch is main then also push it as latest tag
+  #         if [ "${{ env.SANITIZED_BRANCH_NAME }}" == "main" ]; then
+  #           docker tag ${{ secrets.DOCKER_USERNAME }}/tq-reverse-proxy:latest-${{ env.SANITIZED_BRANCH_NAME }} ${{ secrets.DOCKER_USERNAME }}/tq-reverse-proxy:latest
+  #           docker push ${{ secrets.DOCKER_USERNAME }}/tq-reverse-proxy:latest
+  #         fi
 
-  # This workflow contains a single job called "deploy"
-  deploy:
-    needs: [build_and_push_backend_image, build_and_push_frontend_web_image, build_and_push_reverse_proxy_image]
-    runs-on: ubuntu-latest
-    if: github.ref == 'refs/heads/main'
+  # # This workflow contains a single job called "deploy"
+  # deploy:
+  #   needs: [build_and_push_backend_image, build_and_push_frontend_web_image, build_and_push_reverse_proxy_image]
+  #   runs-on: ubuntu-latest
+  #   if: github.ref == 'refs/heads/main'
 
-    steps:
-      # Checks-out your repository under $GITHUB_WORKSPACE, so your job can access it
-      - name: Checkout code
-        uses: actions/checkout@v4
-        with:
-          submodules: true
-          recursive: true
+  #   steps:
+  #     # Checks-out your repository under $GITHUB_WORKSPACE, so your job can access it
+  #     - name: Checkout code
+  #       uses: actions/checkout@v4
+  #       with:
+  #         submodules: true
+  #         recursive: true
 
-      # Configure Workload Identity Federation and generate an access token.
-      #
-      # See https://github.com/google-github-actions/auth for more options,
-      # including authenticating via a JSON credentials file.
-      - id: 'auth'
-        name: 'Authenticate to Google Cloud'
-        uses: google-github-actions/auth@v2
-        with:
-          credentials_json: '${{ secrets.GCP_SA_KEY }}'
+  #     # Configure Workload Identity Federation and generate an access token.
+  #     #
+  #     # See https://github.com/google-github-actions/auth for more options,
+  #     # including authenticating via a JSON credentials file.
+  #     - id: 'auth'
+  #       name: 'Authenticate to Google Cloud'
+  #       uses: google-github-actions/auth@v2
+  #       with:
+  #         credentials_json: '${{ secrets.GCP_SA_KEY }}'
 
-      # Get the GKE credentials so we can deploy to the cluster
-      - name: 'Set up GKE credentials'
-        uses: google-github-actions/get-gke-credentials@v2
-        with:
-          cluster_name: '${{ secrets.GKE_CLUSTER_NAME }}'
-          location: '${{ secrets.GKE_CLUSTER_ZONE }}'
+  #     # Get the GKE credentials so we can deploy to the cluster
+  #     - name: 'Set up GKE credentials'
+  #       uses: google-github-actions/get-gke-credentials@v2
+  #       with:
+  #         cluster_name: '${{ secrets.GKE_CLUSTER_NAME }}'
+  #         location: '${{ secrets.GKE_CLUSTER_ZONE }}'
 
-      # verify the connection to the cluster BEFORE DEPLOYMENT
-      - name: 'Verify cluster services BEFORE DEPLOYMENT'
-        run: |
-          kubectl get services
-          kubectl get deployments
-          kubectl get pods
+  #     # verify the connection to the cluster BEFORE DEPLOYMENT
+  #     - name: 'Verify cluster services BEFORE DEPLOYMENT'
+  #       run: |
+  #         kubectl get services
+  #         kubectl get deployments
+  #         kubectl get pods
 
-      # Download and set up Kompose
-      - name: 'Download and set up Kompose'
-        run: |-
-          curl -L https://github.com/kubernetes/kompose/releases/latest/download/kompose-linux-amd64 -o kompose
-          chmod +x kompose
+  #     # Download and set up Kompose
+  #     - name: 'Download and set up Kompose'
+  #       run: |-
+  #         curl -L https://github.com/kubernetes/kompose/releases/latest/download/kompose-linux-amd64 -o kompose
+  #         chmod +x kompose
 
-      # Convert the Docker Compose file to Kubernetes manifests and apply them
-      - name: 'Convert Docker Compose to Kubernetes and apply'
-        run: |-
-          ./kompose convert -f docker-compose-web.yml
-          kubectl apply -f tq-backend-service.yaml
-          kubectl apply -f tq-frontend-web-tcp-service.yaml
-          kubectl apply -f tq-reverse-proxy-tcp-service.yaml
-          kubectl apply -f tq-backend-deployment.yaml
-          kubectl apply -f tq-frontend-web-deployment.yaml
-          kubectl apply -f tq-reverse-proxy-deployment.yaml
+  #     # Convert the Docker Compose file to Kubernetes manifests and apply them
+  #     - name: 'Convert Docker Compose to Kubernetes and apply'
+  #       run: |-
+  #         ./kompose convert -f docker-compose-web.yml
+  #         kubectl apply -f tq-backend-service.yaml
+  #         kubectl apply -f tq-frontend-web-tcp-service.yaml
+  #         kubectl apply -f tq-reverse-proxy-tcp-service.yaml
+  #         kubectl apply -f tq-backend-deployment.yaml
+  #         kubectl apply -f tq-frontend-web-deployment.yaml
+  #         kubectl apply -f tq-reverse-proxy-deployment.yaml
 
-      # Update the image in the Kubernetes deployment
-      - name: 'Update image in Kubernetes deployment'
-        run: |-
-          kubectl set image deployment/tq-backend tq-backend=${{ secrets.DOCKER_USERNAME }}/tq-backend:latest
-          kubectl set image deployment/tq-frontend-web tq-frontend-web=${{ secrets.DOCKER_USERNAME }}/tq-frontend-web-light:latest
-          kubectl set image deployment/tq-reverse-proxy tq-reverse-proxy=${{ secrets.DOCKER_USERNAME }}/tq-reverse-proxy:latest
+  #     # Update the image in the Kubernetes deployment
+  #     - name: 'Update image in Kubernetes deployment'
+  #       run: |-
+  #         kubectl set image deployment/tq-backend tq-backend=${{ secrets.DOCKER_USERNAME }}/tq-backend:latest
+  #         kubectl set image deployment/tq-frontend-web tq-frontend-web=${{ secrets.DOCKER_USERNAME }}/tq-frontend-web-light:latest
+  #         kubectl set image deployment/tq-reverse-proxy tq-reverse-proxy=${{ secrets.DOCKER_USERNAME }}/tq-reverse-proxy:latest
 
-      # Check the rollout status of the deployments
-      - name: 'Check rollout status for tq-backend'
-        run: |
-          kubectl rollout status deployment/tq-backend
+  #     # Check the rollout status of the deployments
+  #     - name: 'Check rollout status for tq-backend'
+  #       run: |
+  #         kubectl rollout status deployment/tq-backend
 
-      # Check the rollout status of the deployments
-      - name: 'Check rollout status for tq-frontend-web'
-        run: |
-          kubectl rollout status deployment/tq-frontend-web
+  #     # Check the rollout status of the deployments
+  #     - name: 'Check rollout status for tq-frontend-web'
+  #       run: |
+  #         kubectl rollout status deployment/tq-frontend-web
 
-      # Check the rollout status of the deployments
-      - name: 'Check rollout status for tq-reverse-proxy'
-        run: |
-          kubectl rollout status deployment/tq-reverse-proxy
+  #     # Check the rollout status of the deployments
+  #     - name: 'Check rollout status for tq-reverse-proxy'
+  #       run: |
+  #         kubectl rollout status deployment/tq-reverse-proxy
       
-      # verify the connection to the cluster AFTER DEPLOYMENT
-      - name: 'Verify cluster services AFTER DEPLOYMENT'
-        run: |
-          kubectl get services
-          kubectl get deployments
-          kubectl get pods
+  #     # verify the connection to the cluster AFTER DEPLOYMENT
+  #     - name: 'Verify cluster services AFTER DEPLOYMENT'
+  #       run: |
+  #         kubectl get services
+  #         kubectl get deployments
+  #         kubectl get pods
