@@ -189,8 +189,6 @@ jobs:
       - name: Build and push tq-frontend-web-light image
         run: |
           docker build \
-          --build-arg QT_ACCOUNT_EMAIL=${{ secrets.QT_ACCOUNT_EMAIL }} \
-          --build-arg QT_ACCOUNT_PASSWORD=${{ secrets.QT_ACCOUNT_PASSWORD }} \
           -t ${{ secrets.DOCKER_USERNAME }}/tq-frontend-web-light:${{ env.SANITIZED_BRANCH_NAME }}-$GITHUB_SHA \
           -f tq_frontend/qtwebDockerfile ./tq_frontend
         # docker push ${{ secrets.DOCKER_USERNAME }}/tq-frontend-web-light:${{ env.SANITIZED_BRANCH_NAME }}-$GITHUB_SHA
@@ -236,8 +234,6 @@ jobs:
   #     - name: Build and push tq-frontend-desktop image
   #       run: |
   #         docker build \
-  #         --build-arg QT_ACCOUNT_EMAIL=${{ secrets.QT_ACCOUNT_EMAIL }} \
-  #         --build-arg QT_ACCOUNT_PASSWORD=${{ secrets.QT_ACCOUNT_PASSWORD }} \
   #         -t ${{ secrets.DOCKER_USERNAME }}/tq-frontend-desktop:${{ env.SANITIZED_BRANCH_NAME }}-$GITHUB_SHA \
   #         -f tq_frontend/qtdeskDockerfile ./tq_frontend
   #       # docker push ${{ secrets.DOCKER_USERNAME }}/tq-frontend-desktop:${{ env.SANITIZED_BRANCH_NAME }}-$GITHUB_SHA
