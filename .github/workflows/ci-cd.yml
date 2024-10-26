@@ -106,9 +106,10 @@ jobs:
     - name: Build and run tests
       run: |
         export DISPLAY=:99
+        export DEPLOYMENT_LOCATION=cloud
         mkdir -p build
         cd build
-        cmake -DDEPLOYMENT_LOCATION=cloud ../tq_frontend
+        cmake ../tq_frontend
         make
         ctest --output-on-failure
 
