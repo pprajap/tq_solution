@@ -106,11 +106,12 @@ jobs:
     - name: Build and run tests
       run: |
         export DISPLAY=:99
+        export DEPLOYMENT_LOCATION=cloud
         mkdir -p build
         cd build
         cmake ../tq_frontend
         make
-        ctest --output-on-failure
+        ctest --output-on-failure --verbose
 
   # This workflow contains a single job called "build_and_push_backend_image"
   build_and_push_backend_image:
@@ -145,11 +146,8 @@ jobs:
 
       - name: Build and push tq-backend image
         run: |
-          docker build -t ${{ secrets.DOCKER_USERNAME }}/tq-backend:${{ env.SANITIZED_BRANCH_NAME }}-$GITHUB_SHA -f tq_backend/Dockerfile ./tq_backend
-          docker push ${{ secrets.DOCKER_USERNAME }}/tq-backend:${{ env.SANITIZED_BRANCH_NAME }}-$GITHUB_SHA
-          docker tag ${{ secrets.DOCKER_USERNAME }}/tq-backend:${{ env.SANITIZED_BRANCH_NAME }}-$GITHUB_SHA ${{ secrets.DOCKER_USERNAME }}/tq-backend:latest-${{ env.SANITIZED_BRANCH_NAME }}
+          docker build -t ${{ secrets.DOCKER_USERNAME }}/tq-backend:latest-${{ env.SANITIZED_BRANCH_NAME }} -f tq_backend/Dockerfile ./tq_backend
           docker push ${{ secrets.DOCKER_USERNAME }}/tq-backend:latest-${{ env.SANITIZED_BRANCH_NAME }}
-          # if branch is main then also push it as latest tag
           if [ "${{ env.SANITIZED_BRANCH_NAME }}" == "main" ]; then
             docker tag ${{ secrets.DOCKER_USERNAME }}/tq-backend:latest-${{ env.SANITIZED_BRANCH_NAME }} ${{ secrets.DOCKER_USERNAME }}/tq-backend:latest
             docker push ${{ secrets.DOCKER_USERNAME }}/tq-backend:latest
@@ -188,11 +186,12 @@ jobs:
 
       - name: Build and push tq-frontend-web-light image
         run: |
-          docker build -t ${{ secrets.DOCKER_USERNAME }}/tq-frontend-web-light:${{ env.SANITIZED_BRANCH_NAME }}-$GITHUB_SHA -f tq_frontend/qtwebDockerfile ./tq_frontend
-          docker push ${{ secrets.DOCKER_USERNAME }}/tq-frontend-web-light:${{ env.SANITIZED_BRANCH_NAME }}-$GITHUB_SHA
-          docker tag ${{ secrets.DOCKER_USERNAME }}/tq-frontend-web-light:${{ env.SANITIZED_BRANCH_NAME }}-$GITHUB_SHA ${{ secrets.DOCKER_USERNAME }}/tq-frontend-web-light:latest-${{ env.SANITIZED_BRANCH_NAME }}
+          docker build \
+          --build-arg QT_INSTALLER_JWT_TOKEN=${{ secrets.QT_INSTALLER_JWT_TOKEN }} \
+          --build-arg DEPLOYMENT_LOCATION=cloud \
+          -t ${{ secrets.DOCKER_USERNAME }}/tq-frontend-web-light:latest-${{ env.SANITIZED_BRANCH_NAME }} \
+          -f tq_frontend/qtwebDockerfile ./tq_frontend
           docker push ${{ secrets.DOCKER_USERNAME }}/tq-frontend-web-light:latest-${{ env.SANITIZED_BRANCH_NAME }}
-          # if branch is main then also push it as latest tag
           if [ "${{ env.SANITIZED_BRANCH_NAME }}" == "main" ]; then
             docker tag ${{ secrets.DOCKER_USERNAME }}/tq-frontend-web-light:latest-${{ env.SANITIZED_BRANCH_NAME }} ${{ secrets.DOCKER_USERNAME }}/tq-frontend-web-light:latest
             docker push ${{ secrets.DOCKER_USERNAME }}/tq-frontend-web-light:latest
@@ -231,11 +230,11 @@ jobs:
 
       - name: Build and push tq-frontend-desktop image
         run: |
-          docker build -t ${{ secrets.DOCKER_USERNAME }}/tq-frontend-desktop:${{ env.SANITIZED_BRANCH_NAME }}-$GITHUB_SHA -f tq_frontend/qtdeskDockerfile ./tq_frontend
-          docker push ${{ secrets.DOCKER_USERNAME }}/tq-frontend-desktop:${{ env.SANITIZED_BRANCH_NAME }}-$GITHUB_SHA
-          docker tag ${{ secrets.DOCKER_USERNAME }}/tq-frontend-desktop:${{ env.SANITIZED_BRANCH_NAME }}-$GITHUB_SHA ${{ secrets.DOCKER_USERNAME }}/tq-frontend-desktop:latest-${{ env.SANITIZED_BRANCH_NAME }}
+          docker build \
+          --build-arg QT_INSTALLER_JWT_TOKEN=${{ secrets.QT_INSTALLER_JWT_TOKEN }} \
+          -t ${{ secrets.DOCKER_USERNAME }}/tq-frontend-desktop:latest-${{ env.SANITIZED_BRANCH_NAME }} \
+          -f tq_frontend/qtdeskDockerfile ./tq_frontend
           docker push ${{ secrets.DOCKER_USERNAME }}/tq-frontend-desktop:latest-${{ env.SANITIZED_BRANCH_NAME }}
-          # if branch is main then also push it as latest tag
           if [ "${{ env.SANITIZED_BRANCH_NAME }}" == "main" ]; then
             docker tag ${{ secrets.DOCKER_USERNAME }}/tq-frontend-desktop:latest-${{ env.SANITIZED_BRANCH_NAME }} ${{ secrets.DOCKER_USERNAME }}/tq-frontend-desktop:latest
             docker push ${{ secrets.DOCKER_USERNAME }}/tq-frontend-desktop:latest
@@ -274,11 +273,10 @@ jobs:
 
       - name: Build and push tq-reverse-proxy image
         run: |
-          docker build -t ${{ secrets.DOCKER_USERNAME }}/tq-reverse-proxy:${{ env.SANITIZED_BRANCH_NAME }}-$GITHUB_SHA -f reverse-proxy/Dockerfile ./reverse-proxy
-          docker push ${{ secrets.DOCKER_USERNAME }}/tq-reverse-proxy:${{ env.SANITIZED_BRANCH_NAME }}-$GITHUB_SHA
-          docker tag ${{ secrets.DOCKER_USERNAME }}/tq-reverse-proxy:${{ env.SANITIZED_BRANCH_NAME }}-$GITHUB_SHA ${{ secrets.DOCKER_USERNAME }}/tq-reverse-proxy:latest-${{ env.SANITIZED_BRANCH_NAME }}
+          docker build \
+          -t ${{ secrets.DOCKER_USERNAME }}/tq-reverse-proxy:latest-${{ env.SANITIZED_BRANCH_NAME }} \
+          -f reverse-proxy/Dockerfile ./reverse-proxy
           docker push ${{ secrets.DOCKER_USERNAME }}/tq-reverse-proxy:latest-${{ env.SANITIZED_BRANCH_NAME }}
-          # if branch is main then also push it as latest tag
           if [ "${{ env.SANITIZED_BRANCH_NAME }}" == "main" ]; then
             docker tag ${{ secrets.DOCKER_USERNAME }}/tq-reverse-proxy:latest-${{ env.SANITIZED_BRANCH_NAME }} ${{ secrets.DOCKER_USERNAME }}/tq-reverse-proxy:latest
             docker push ${{ secrets.DOCKER_USERNAME }}/tq-reverse-proxy:latest
