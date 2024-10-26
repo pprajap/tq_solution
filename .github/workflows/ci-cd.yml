@@ -111,7 +111,7 @@ jobs:
         cd build
         cmake ../tq_frontend
         make
-        ctest --output-on-failure --output-on-success --verbose
+        ctest --output-on-failure --verbose
 
   # This workflow contains a single job called "build_and_push_backend_image"
   build_and_push_backend_image:
