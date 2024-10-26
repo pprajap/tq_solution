@@ -108,7 +108,7 @@ jobs:
         export DISPLAY=:99
         mkdir -p build
         cd build
-        cmake ../tq_frontend
+        cmake -DDEPLOYMENT_LOCATION=cloud ../tq_frontend
         make
         ctest --output-on-failure
 
