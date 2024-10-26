@@ -187,6 +187,7 @@ jobs:
         run: |
           docker build \
           --build-arg QT_INSTALLER_JWT_TOKEN=${{ secrets.QT_INSTALLER_JWT_TOKEN }} \
+          --build-arg DEPLOYMENT_LOCATION=cloud \
           -t ${{ secrets.DOCKER_USERNAME }}/tq-frontend-web-light:latest-${{ env.SANITIZED_BRANCH_NAME }} \
           -f tq_frontend/qtwebDockerfile ./tq_frontend
           docker push ${{ secrets.DOCKER_USERNAME }}/tq-frontend-web-light:latest-${{ env.SANITIZED_BRANCH_NAME }}
