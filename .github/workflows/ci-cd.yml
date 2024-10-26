@@ -343,6 +343,9 @@ jobs:
           kubectl set image deployment/tq-backend tq-backend=${{ secrets.DOCKER_USERNAME }}/tq-backend:latest
           kubectl set image deployment/tq-frontend-web tq-frontend-web=${{ secrets.DOCKER_USERNAME }}/tq-frontend-web-light:latest
           kubectl set image deployment/tq-reverse-proxy tq-reverse-proxy=${{ secrets.DOCKER_USERNAME }}/tq-reverse-proxy:latest
+          kubectl rollout restart deployment/tq-backend
+          kubectl rollout restart deployment/tq-frontend-web
+          kubectl rollout restart deployment/tq-reverse-proxy
 
       # Check the rollout status of the deployments
       - name: 'Check rollout status for tq-backend'
