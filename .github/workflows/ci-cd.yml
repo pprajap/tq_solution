@@ -186,6 +186,7 @@ jobs:
       - name: Build and push tq-frontend-web-light image
         run: |
           docker build \
+          --build-arg QT_INSTALLER_JWT_TOKEN=${{ secrets.QT_INSTALLER_JWT_TOKEN }} \
           -t ${{ secrets.DOCKER_USERNAME }}/tq-frontend-web-light:latest-${{ env.SANITIZED_BRANCH_NAME }} \
           -f tq_frontend/qtwebDockerfile ./tq_frontend
           docker push ${{ secrets.DOCKER_USERNAME }}/tq-frontend-web-light:latest-${{ env.SANITIZED_BRANCH_NAME }}
@@ -228,6 +229,7 @@ jobs:
       - name: Build and push tq-frontend-desktop image
         run: |
           docker build \
+          --build-arg QT_INSTALLER_JWT_TOKEN=${{ secrets.QT_INSTALLER_JWT_TOKEN }} \
           -t ${{ secrets.DOCKER_USERNAME }}/tq-frontend-desktop:latest-${{ env.SANITIZED_BRANCH_NAME }} \
           -f tq_frontend/qtdeskDockerfile ./tq_frontend
           docker push ${{ secrets.DOCKER_USERNAME }}/tq-frontend-desktop:latest-${{ env.SANITIZED_BRANCH_NAME }}
